@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load djblets_deco i18n %}
+
+{% block title %}{% trans "Choose a username" %}{% endblock %}
+
+{% block content %}
+<div id="auth_container">
+ <div class="auth-header">
+  <h1>{% trans "Choose a username" %}</h1>
+{%  if form.errors %}
+{%   errorbox %}{{form.non_field_errors}}{% enderrorbox %}
+{%  endif %}
+ </div>
+
+ <form method="post" action="." class="auth-section main-auth-section">
+  {% csrf_token %}
+
+  <div class="auth-form-row auth-field-row">
+   {{form.username.label_tag}}
+   {{form.username}}
+   {{form.errors.username}}
+  </div>
+
+  <div class="auth-form-row">
+   <div class="auth-button-container">
+    <input type="submit" class="primary" value="{% trans 'Register' %}" />
+   </div>
+  </div>
+ </form>
+</div>
+{% endblock %}

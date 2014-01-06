@@ -1,0 +1,67 @@
+{% load djblets_extensions i18n %}
+
+{% if auth_backends.0.supports_registration and extension.settings.enable_openid %}
+<div class="auth-section" id="social_login">
+ {% csrf_token %}
+ <input type="hidden" name="next_page" value="{{next_page}}" />
+
+ <h3>{% trans "Or log in with another service" %}</h3>
+ <p class="explanation">
+{%  blocktrans %}
+  A new account will be created the first time you log in
+  with the service.
+{%  endblocktrans %}
+ </p>
+
+{%  if message %}
+ <ul class="messages">
+{%   for message in messages %}
+  <li{% if messag.tags %} class="{{message.tags}}"{% endif %}>{{message}}</li>
+{%   endfor %}
+ </ul>
+{%  endif %}
+
+ <div id="social_login_buttons">
+{%  if extension.settings.enable_github %}
+  <form method="post" action="{% url 'social:begin' 'github' %}"
+        class="auth-section" id="social_login_form">
+   <button class="btn btn-github">
+    <span class="fa fa-github"></span> | GitHub
+   </button>
+  </form>
+{%  endif %}
+
+{%  if extension.settings.enable_google %}
+  <form method="post" action="{% url 'social:begin' 'google' %}"
+        class="auth-section" id="social_login_form">
+   <button class="btn btn-google-plus">
+    <span class="fa fa-google-plus"></span> | Google
+   </button>
+  </form>
+{%  endif %}
+
+  <button class="btn btn-twitter">
+   <span class="fa fa-twitter"></span> | Twitter
+  </button>
+
+  <button class="btn btn-facebook">
+   <span class="fa fa-facebook"></span> | Facebook
+  </button>
+
+  <a id="social_login_more_options" href="#">{% trans "More options" %}</a>
+ </div>
+
+{% comment %}
+ <div class="auth-form-row auth-field-row">
+  <label for="id_openid_identifier">{% trans "OpenID URL" %}</label>
+  <input type="text" name="openid_identifier" id="id_openid_identifier" />
+ </div>
+
+ <div class="auth-form-row">
+  <div class="auth-button-container">
+   <input type="submit" value="{% trans 'OpenID' %}" />
+  </div>
+ </div>
+{% endcomment %}
+</div>
+{% endif %}
